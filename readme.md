@@ -54,7 +54,7 @@ Path for writing resized images. It will resolved with current running path
 
 Type: `number`, or `array`, or `object`
 
-Options for the target image in renaming and resizing. It can be simple number and numbers in array, or object including detail options, which has a size as a key and can be have specific name and callback function for resized image. the callback function will give the filename, extension, size, and index of the size.
+Options for the target image in renaming and resizing. It can be a simple number and numbers in array, or object including detail options, which has a size as a key and can be have specific name and callback function for resized image. the callback function will give the filename, extension, size, and index of the size.
 
 ```js
 var sizes = {
