@@ -29,6 +29,35 @@ square('./fixtures/logo.png', './images', {
 	192: (filename, ext, size, index) => manifest[index]
 }).then(images => {});
 
+// compatible with `icons` member in manifest.json. square would find out `src` member in each property items
+return square(src, dest, {
+	72: {
+		src: 'icon-72x72.png',
+		sizes: '72x72',
+		type: 'image/png'
+	},
+	96: {
+		src: 'icon-96x96.png'
+	},
+	128: {
+		src: 'icon-128x128.png'
+	},
+	144: {
+		src: 'ms-touch-icon-144x144-precomposed.png'
+	},
+	152: {
+		src: 'apple-touch-icon-152x152.png'
+	},
+	192: {
+		src: 'chrome-touch-icon-192x192.png'
+	},
+	384: {
+		src: 'chrome-splashscreen-icon-384x384.png'
+	},
+	512: {
+		src: 'icon-512x512.png'
+	}
+}).then(images => {});
 // call in synchronize
 square.sync('./fixtures/logo.png', './images', 32, images => {});
 ```

@@ -16,19 +16,19 @@ test.cb.before(t => {
 	rm(dest, () => md(dest, t.end));
 });
 
-test('square to a image', t => {
+test.serial('square to a image', t => {
 	return square(src, dest, 32).then(images => {
 		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
 	});
 });
 
-test('square to multiple images', t => {
+test.serial('square to multiple images', t => {
 	return square(src, dest, [64, 92]).then(images => {
 		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
 	});
 });
 
-test('square to multiple images in various options', t => {
+test.serial('square to multiple images in various options', t => {
 	var resizedImages = [
 		'icon-128x128.png',
 		'ms-touch-icon-144x144-precomposed.png',
@@ -46,13 +46,46 @@ test('square to multiple images in various options', t => {
 	});
 });
 
-test('square to multiple images in synchronize', t => {
+test.serial('square to multiple images in synchronize', t => {
 	return square.sync(src, dest, [384, 512], (err, images) => {
 		if (err) {
 			t.fail(err);
 			return;
 		}
 
+		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
+	});
+});
+
+test.serial('square to multiple images as icons member of manifest', t => {
+	return square(src, dest, {
+		72: {
+			src: 'icon-72x72.png',
+			sizes: '72x72',
+			type: 'image/png'
+		},
+		96: {
+			src: 'icon-96x96.png'
+		},
+		128: {
+			src: 'icon-128x128.png'
+		},
+		144: {
+			src: 'ms-touch-icon-144x144-precomposed.png'
+		},
+		152: {
+			src: 'apple-touch-icon-152x152.png'
+		},
+		192: {
+			src: 'chrome-touch-icon-192x192.png'
+		},
+		384: {
+			src: 'chrome-splashscreen-icon-384x384.png'
+		},
+		512: {
+			src: 'icon-512x512.png'
+		}
+	}).then(images => {
 		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
 	});
 });

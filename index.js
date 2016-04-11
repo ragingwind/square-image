@@ -33,6 +33,8 @@ function prepareSquareTask(src, sizes) {
 				tasked(Number(s), sizes[s]);
 			} else if (is.func(sizes[s])) {
 				tasked(Number(s), sizes[s](base, ext, s));
+			} else if (is.object(sizes[s])) {
+				tasked(Number(s), sizes[s].src);
 			} else {
 				throw new Error('Unknown type for target images');
 			}
