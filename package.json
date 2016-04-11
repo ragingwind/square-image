@@ -1,6 +1,6 @@
 {
   "name": "square-image",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Resize an image in square size by a simple way",
   "license": "MIT",
   "repository": "ragingwind/square-image",
