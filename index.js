@@ -13,14 +13,16 @@ const is = {
 };
 
 function prepareSquareTask(src, sizes) {
-	let tasks = [];
+	let tasks = {};
 	const ext = path.extname(src);
 	const base = path.basename(src, ext);
 	const tasked = (size, name) => {
-		tasks.push({
-			size: size,
-			name: name || `${base}-${size}x${size}${ext}`
-		});
+		size = Math.floor(size);
+		tasks[size] = {
+			src: name || `${base}-${size}x${size}${ext}`,
+			sizes: `${size}x${size}`,
+			type: `image/${ext.replace(/^./, '')}`
+		};
 	};
 
 	if (is.number(sizes)) {
@@ -30,11 +32,11 @@ function prepareSquareTask(src, sizes) {
 	} else if (is.object(sizes)) {
 		Object.keys(sizes).forEach(s => {
 			if (is.string(sizes[s])) {
-				tasked(Number(s), sizes[s]);
+				tasked(s, sizes[s]);
 			} else if (is.func(sizes[s])) {
-				tasked(Number(s), sizes[s](base, ext, s));
+				tasked(s, sizes[s](base, ext, s));
 			} else if (is.object(sizes[s])) {
-				tasked(Number(s), sizes[s].src);
+				tasked(s, sizes[s].src);
 			} else {
 				throw new Error('Unknown type for target images');
 			}
@@ -62,8 +64,9 @@ function square(src, dest, sizes, cb) {
 			return;
 		}
 
-		eachAsync(tasks, (task, index, done) => {
-			image.resize(task.size, task.size).write(path.join(dest, task.name), done);
+		eachAsync(Object.keys(tasks), (size, index, done) => {
+			size = Math.floor(size);
+			image.resize(size, size).write(path.join(dest, tasks[size].src), done);
 		}, () => {
 			cb(null, tasks);
 		});

@@ -58,6 +58,7 @@ return square(src, dest, {
 		src: 'icon-512x512.png'
 	}
 }).then(images => {});
+
 // call in synchronize
 square.sync('./fixtures/logo.png', './images', 32, images => {});
 ```
@@ -66,6 +67,8 @@ square.sync('./fixtures/logo.png', './images', 32, images => {});
 ## API
 
 ### square(src, [dest], sizes)
+
+Square size of source image in providing sizes and returns the list of resized images as same format with manifest.json of Web Manifest
 
 #### src
 

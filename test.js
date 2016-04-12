@@ -9,6 +9,7 @@ const dest = '.tmp';
 const src = './fixtures/grey-chrome.png';
 const verifyImage = (image, size) => {
 	var dimensions = sizeof(path.join(dest, image));
+	size = Math.floor(size);
 	return (dimensions.height === size) && (dimensions.width === size);
 };
 
@@ -18,13 +19,13 @@ test.cb.before(t => {
 
 test.serial('square to a image', t => {
 	return square(src, dest, 32).then(images => {
-		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
+		Object.keys(images).forEach(size => t.ok(verifyImage(images[size].src, size)));
 	});
 });
 
 test.serial('square to multiple images', t => {
 	return square(src, dest, [64, 92]).then(images => {
-		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
+		Object.keys(images).forEach(size => t.ok(verifyImage(images[size].src, size)));
 	});
 });
 
@@ -42,7 +43,7 @@ test.serial('square to multiple images in various options', t => {
 		152: (filename, ext, size) => `chrome-splashscreen-icon-${size}x${size}${ext}`,
 		192: (filename, ext, size, index) => resizedImages[index]
 	}).then(images => {
-		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
+		Object.keys(images).forEach(size => t.ok(verifyImage(images[size].src, size)));
 	});
 });
 
@@ -53,7 +54,7 @@ test.serial('square to multiple images in synchronize', t => {
 			return;
 		}
 
-		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
+		Object.keys(images).forEach(size => t.ok(verifyImage(images[size].src, size)));
 	});
 });
 
@@ -86,6 +87,16 @@ test.serial('square to multiple images as icons member of manifest', t => {
 			src: 'icon-512x512.png'
 		}
 	}).then(images => {
-		images.forEach(image => t.ok(verifyImage(image.name, image.size)));
+		Object.keys(images).forEach(size => t.ok(verifyImage(images[size].src, size)));
+	});
+});
+
+test.serial('square returns icons member field like manifest', t => {
+	return square(src, dest, [32, 64]).then(images => {
+		Object.keys(images).forEach(size => {
+			t.is(images[size].src, `grey-chrome-${size}x${size}.png`);
+			t.is(images[size].sizes, `${size}x${size}`);
+			t.is(images[size].type, 'image/png');
+		});
 	});
 });
