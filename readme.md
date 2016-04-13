@@ -29,7 +29,7 @@ square('./fixtures/logo.png', './images', {
 	192: (filename, ext, size, index) => manifest[index]
 }).then(images => {});
 
-// compatible with `icons` member in manifest.json. square would find out `src` member in each property items
+// compatibility with `icons` member in manifest.json. square would find out `src` member in each property items
 return square(src, dest, {
 	72: {
 		src: 'icon-72x72.png',
@@ -50,12 +50,6 @@ return square(src, dest, {
 	},
 	192: {
 		src: 'chrome-touch-icon-192x192.png'
-	},
-	384: {
-		src: 'chrome-splashscreen-icon-384x384.png'
-	},
-	512: {
-		src: 'icon-512x512.png'
 	}
 }).then(images => {});
 
@@ -96,6 +90,43 @@ var sizes = {
 	152: (filename, ext, size) => `chrome-splashscreen-icon-${size}x${size}${ext}`,
 	192: (filename, ext, size, index) => resizedImages[index]
 }
+```
+
+or also support [icons members of Web Manifest ](https://www.w3.org/TR/appmanifest/#icons-member) format. value of `src` will be a output filename.
+
+```js
+var sizes = {
+	72: {
+		src: 'icon-72x72.png',
+		sizes: '72x72',
+		type: 'image/png'
+	},
+	96: {
+		src: 'icon-96x96.png'
+		sizes: '96x96',
+		type: 'image/png'
+	},
+	128: {
+		src: 'icon-128x128.png',
+		sizes: '128x128',
+		type: 'image/png'
+	},
+	144: {
+		src: 'ms-touch-icon-144x144-precomposed.png',
+		sizes: '144x144',
+		type: 'image/png'
+	},
+	152: {
+		src: 'apple-touch-icon-152x152.png',
+		sizes: '152x152',
+		type: 'image/png'
+	},
+	192: {
+		src: 'chrome-touch-icon-192x192.png',
+		sizes: '192x192',
+		type: 'image/png'
+	}
+};
 ```
 
 ### square.sync(src, [dest], sizes, cb(err, tasks))
