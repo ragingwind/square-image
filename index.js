@@ -66,7 +66,10 @@ function square(src, dest, sizes, cb) {
 
 		eachAsync(Object.keys(tasks), (size, index, done) => {
 			size = Math.floor(size);
-			image.resize(size, size).write(path.join(dest, tasks[size].src), done);
+			image.clone()
+					.resize(size, size)
+					.quality(100)
+					.write(path.join(dest, tasks[size].src), done);
 		}, () => {
 			cb(null, tasks);
 		});
